@@ -4,3 +4,7 @@ export {
   MemoryParcelRepository,
   VersionConflictError,
 } from "./repositories/memory-parcel-repository.js"
+export {
+  decodeParcelSnapshot,
+  encodeParcelSnapshot,
+} from "./repositories/parcel-snapshot.js"

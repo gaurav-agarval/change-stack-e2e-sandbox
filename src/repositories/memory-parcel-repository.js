@@ -51,4 +51,31 @@ export class MemoryParcelRepository {
   operationLog() {
     return [...this.#operations]
   }
+
+  exportSnapshot(createdAt) {
+    return encodeParcelSnapshot([...this.#parcels.values()], createdAt)
+  }
+
+  restoreSnapshot(serialized, { replace = false } = {}) {
+    const snapshot = decodeParcelSnapshot(serialized)
+    if (!replace && this.#parcels.size > 0) {
+      throw new Error("Cannot restore over a non-empty repository")
+    }
+
+    const next = new Map(snapshot.parcels.map((parcel) => [parcel.id, parcel]))
+    this.#parcels = next
+    this.#operations.push(
+      Object.freeze({
+        kind: "restore",
+        parcelId: "*",
+        fromVersion: 0,
+        toVersion: snapshot.snapshotVersion,
+      }),
+    )
+    return snapshot
+  }
 }
+import {
+  decodeParcelSnapshot,
+  encodeParcelSnapshot,
+} from "./parcel-snapshot.js"
