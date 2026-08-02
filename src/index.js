@@ -1,3 +1,5 @@
 export { createParcel, ParcelStatus, transitionParcel } from "./domain/parcel.js"
+export { EventBus, EventDispatchError } from "./events/event-bus.js"
+export { parcelRegistered, parcelStatusChanged } from "./events/parcel-events.js"
 export { ParcelService } from "./services/parcel-service.js"
 export { InMemoryParcelStore } from "./store/in-memory-parcel-store.js"
