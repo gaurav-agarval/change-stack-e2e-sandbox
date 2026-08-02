@@ -14,10 +14,12 @@ export class ParcelService {
   async transition(id, nextStatus) {
     const parcel = await this.store.get(id)
     if (!parcel) throw new Error(`Parcel ${id} was not found`)
-    return this.store.save(transitionParcel(parcel, nextStatus))
+    return this.store.save(transitionParcel(parcel, nextStatus), {
+      expectedVersion: parcel.version,
+    })
   }
 
-  async list() {
-    return this.store.list()
+  async list(filter) {
+    return this.store.list(filter)
   }
 }
