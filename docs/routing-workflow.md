@@ -17,3 +17,10 @@ transaction boundaries without connecting to any external system.
 - Missing parcels return a not-found response.
 - Capacity or zone mismatches return a conflict response.
 - Successful and rejected assignments produce immutable audit entries.
+
+## Operator verification
+
+When capacity changes between preview and assignment, the service evaluates the
+latest route state and either selects another compatible route or records a
+rejection. This keeps the preview advisory while preserving assignment-time
+capacity guarantees.
