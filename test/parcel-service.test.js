@@ -15,6 +15,7 @@ test("registers and advances a parcel through its lifecycle", async () => {
   })
 
   assert.equal(created.status, ParcelStatus.CREATED)
+  await service.transition(created.id, ParcelStatus.ROUTED)
   const inTransit = await service.transition(
     created.id,
     ParcelStatus.IN_TRANSIT,
@@ -24,8 +25,17 @@ test("registers and advances a parcel through its lifecycle", async () => {
     ParcelStatus.DELIVERED,
   )
 
-  assert.equal(inTransit.version, 2)
+  assert.equal(inTransit.version, 3)
   assert.equal(delivered.status, ParcelStatus.DELIVERED)
+  assert.deepEqual(
+    delivered.history.map((entry) => entry.status),
+    [
+      ParcelStatus.CREATED,
+      ParcelStatus.ROUTED,
+      ParcelStatus.IN_TRANSIT,
+      ParcelStatus.DELIVERED,
+    ],
+  )
 })
 
 test("rejects duplicate parcel identifiers", async () => {
