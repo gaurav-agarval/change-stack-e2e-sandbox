@@ -1,13 +1,13 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 import {
-  InMemoryParcelStore,
+  MemoryParcelRepository,
   ParcelService,
   ParcelStatus,
 } from "../src/index.js"
 
 test("registers and advances a parcel through its lifecycle", async () => {
-  const service = new ParcelService(new InMemoryParcelStore())
+  const service = new ParcelService(new MemoryParcelRepository())
   const created = await service.register({
     id: "parcel-101",
     destination: "North Harbor",
@@ -29,7 +29,7 @@ test("registers and advances a parcel through its lifecycle", async () => {
 })
 
 test("rejects duplicate parcel identifiers", async () => {
-  const service = new ParcelService(new InMemoryParcelStore())
+  const service = new ParcelService(new MemoryParcelRepository())
   const input = {
     id: "parcel-202",
     destination: "West Ridge",
